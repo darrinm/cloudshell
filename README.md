@@ -1,6 +1,6 @@
 # CloudShell
 
-Web-based terminal with Claude Code integration. Runs a local server that provides shell terminals, Claude Code sessions, and an Agent SDK chat interface — all in browser tabs.
+Web-based terminal with Claude Code integration. Runs a local server with shell terminals, Claude Code sessions, and an AI chat interface — all in browser tabs.
 
 ## Install
 
@@ -11,36 +11,72 @@ npm install -g cloudshell
 ## Quick Start
 
 ```bash
-# Set your API key (required for Chat tabs)
-export ANTHROPIC_API_KEY=sk-...
-
-# Run from any directory
+export ANTHROPIC_API_KEY=sk-ant-...
 cloudshell --open
 ```
 
-Or use without installing:
+Or without installing:
 
 ```bash
 npx cloudshell --open
 ```
 
-Opens at `http://localhost:4444`. Shells default to your current working directory.
+Opens at `http://localhost:4444`.
 
 ## Tab Types
 
-- **Shell** — Full terminal (zsh/bash) via node-pty + ghostty-web with WebGL rendering
-- **Claude** — Claude Code CLI running in a terminal PTY (same as running `claude` locally)
-- **Chat** — Agent SDK chat with markdown rendering, tool use display, thinking toggle, and context meter
+**Shell** — Full terminal (zsh/bash) via node-pty with WebGL rendering. Supports colors, vim, tmux — everything your local terminal does.
+
+**Claude** — Claude Code CLI in a dedicated terminal tab. Same as running `claude` in a shell, but isolated.
+
+**Work** — AI chat powered by the Anthropic Agent SDK:
+- Model selection (Sonnet, Haiku, Opus)
+- Extended thinking with configurable effort/budget
+- Tool use display with expandable results
+- File upload and image paste
+- @-mentions for including file contents
+- Slash commands
+- Context usage meter
+- Markdown rendering with syntax highlighting
 
 ## CLI Options
 
 ```
 cloudshell [options]
 
-  -p, --port <number>   Port to listen on (default: 4444)
-  --cwd <path>          Working directory for shells and agent (default: cwd)
+  -p, --port <number>   Port (default: 4444)
+  --cwd <path>          Working directory (default: cwd)
   --open                Open browser on startup
 ```
+
+## Authentication
+
+CloudShell supports three auth modes, detected from environment variables:
+
+| Mode | Variables | Description |
+|------|-----------|-------------|
+| **Password** | `CLOUDSHELL_PASSWORD` | Simple shared password |
+| **GitHub OAuth** | `GITHUB_CLIENT_ID` + `GITHUB_CLIENT_SECRET` | Direct OAuth flow |
+| **GitHub OAuth Proxy** | `CLOUDSHELL_OAUTH_PROXY_URL` + `CLOUDSHELL_OAUTH_SECRET` | Proxied OAuth for deployments without a public callback URL |
+| **None** | _(no auth vars set)_ | Open access (default) |
+
+Optional: `GITHUB_ALLOWED_USERS` — comma-separated list of GitHub usernames to allow.
+
+## Environment Variables
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `ANTHROPIC_API_KEY` | For Work tabs | Claude API access |
+| `CLOUDSHELL_PASSWORD` | No | Enable password protection |
+| `GITHUB_CLIENT_ID` | No | GitHub OAuth app client ID |
+| `GITHUB_CLIENT_SECRET` | No | GitHub OAuth app client secret |
+| `GITHUB_ALLOWED_USERS` | No | Restrict GitHub login to these users |
+| `SHELL` | No | Override default shell (default: `/bin/zsh`) |
+
+## Prerequisites
+
+- Node.js >= 20
+- Native build tools for node-pty and better-sqlite3 (Xcode CLI on macOS, `build-essential` on Linux)
 
 ## Development
 
@@ -48,62 +84,17 @@ cloudshell [options]
 git clone https://github.com/darrinm/cloudshell.git
 cd cloudshell
 npm install && cd web && npm install && cd ..
-npm run build:all
-npm start
+npm run dev          # Single server with Vite HMR + nodemon
 ```
 
 ```bash
-npm run dev          # Single server with Vite middleware + nodemon
-npm run build        # TypeScript → dist/
-npm run build:web    # Vite → web/dist/
+npm run build        # TypeScript backend
+npm run build:web    # Vite frontend
 npm run build:all    # Both
 npm run check-types  # Both backend and frontend
 npm run format       # Prettier
+npm start            # Production server
 ```
-
-## Architecture
-
-```
-src/
-  server.ts          Express + WebSocket + CLI entry point
-  pty-server.ts      PTY session management (create/attach/input/resize/kill)
-  agent-stream.ts    Claude Agent SDK streaming wrapper
-  agent-events.ts    SDK event → SSE event translation
-  types.ts           Shared types (WS messages, agent events, context usage)
-
-web/src/
-  App.tsx            Tab management (shell/claude/chat)
-  components/
-    TabBar.tsx       Tab bar with add/close/rename
-    TerminalTab.tsx  ghostty-web terminal (shell + claude tabs)
-    WorkTab.tsx      Agent SDK chat interface
-    WebGLRenderer.ts Custom WebGL2 terminal renderer
-    ContentBlocksDisplay.tsx  Markdown + tool use rendering
-    ContextMeter.tsx Token usage visualization
-    ThinkingToggle.tsx Extended thinking controls
-```
-
-### Key Dependencies
-
-| Component | Library |
-|-----------|---------|
-| Terminal | ghostty-web (WASM) + custom WebGL2 renderer |
-| PTY | node-pty |
-| Agent SDK | @anthropic-ai/claude-agent-sdk |
-| Server | Express 5 + ws |
-| Frontend | React 19 + Tailwind + Vite |
-
-### Protocols
-
-- **WebSocket** (`/ws/pty`) — Binary PTY I/O (base64-encoded), create/attach/resize/kill
-- **SSE** (`POST /api/chat`) — Agent SDK streaming events
-- **REST** — `/api/config`, `/api/upload`, `/api/files/:filename`
-
-## Environment Variables
-
-- `ANTHROPIC_API_KEY` — Required for Chat tabs (Agent SDK)
-- `SHELL` — Shell to use for terminal tabs (default: `/bin/zsh`)
-- `CLOUDSHELL_PASSWORD` — Set to enable password protection
 
 ## License
 

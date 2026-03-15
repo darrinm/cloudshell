@@ -433,7 +433,11 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 });
 
 app.get('/api/files/:filename', (req, res) => {
-  const filePath = path.join(uploadDir, req.params.filename);
+  const filePath = path.resolve(uploadDir, req.params.filename);
+  if (!filePath.startsWith(uploadDir + path.sep)) {
+    res.status(403).json({ error: 'Access denied' });
+    return;
+  }
   if (!fs.existsSync(filePath)) {
     res.status(404).json({ error: 'File not found' });
     return;
@@ -548,6 +552,11 @@ app.delete('/api/conversations/:id', (req, res) => {
 });
 
 app.get('/api/conversations/:id/messages', (req, res) => {
+  const userId = resolveUserId(req);
+  if (!getConversation(CWD, req.params.id, userId)) {
+    res.status(404).json({ error: 'Not found' });
+    return;
+  }
   const messages = getMessages(CWD, req.params.id);
   res.json(messages);
 });
@@ -572,6 +581,11 @@ app.post('/api/conversations/:id/messages', (req, res) => {
 });
 
 app.delete('/api/conversations/:id/messages', (req, res) => {
+  const userId = resolveUserId(req);
+  if (!getConversation(CWD, req.params.id, userId)) {
+    res.status(404).json({ error: 'Not found' });
+    return;
+  }
   deleteMessages(CWD, req.params.id);
   res.json({ ok: true });
 });
@@ -707,7 +721,8 @@ function resolveLocalImages(messages: any[]): any[] {
         part.source.url?.startsWith('/api/files/')
       ) {
         const filename = part.source.url.replace('/api/files/', '');
-        const filePath = path.join(uploadDir, filename);
+        const filePath = path.resolve(uploadDir, filename);
+        if (!filePath.startsWith(uploadDir + path.sep)) return part;
         try {
           const data = fs.readFileSync(filePath);
           const ext = path.extname(filename).toLowerCase();

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-visual" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>CloudShell</title>
+    <script>
+      (function() {
+        var valid = ['light','dark','system','solarized-dark','dracula','monokai','catppuccin','gruvbox','tokyo-night'];
+        var p = localStorage.getItem('iris-theme') || 'system';
+        if (valid.indexOf(p) === -1) p = 'system';
+        var t = p === 'system'
+          ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+          : p;
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Phosphor green color matrix filter (inline SVG for Safari compat) -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0">
+      <filter id="phosphor-green" color-interpolation-filters="sRGB">
+        <feColorMatrix values="0.06 0.117 0.023 0 0  0.449 0.881 0.171 0 0  0 0 0 0 0  0 0 0 1 0"/>
+      </filter>
+    </svg>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,327 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme tokens — RGB channel format for Tailwind opacity support */
+:root,
+[data-theme="dark"] {
+  --iris-bg: 10 10 10;
+  --iris-bg-subtle: 17 17 17;
+  --iris-surface: 20 20 20;
+  --iris-surface-hover: 26 26 26;
+  --iris-surface-active: 31 31 31;
+  --iris-surface-raised: 38 38 38;
+  --iris-border: 50 50 50;
+  --iris-border-muted: 31 31 31;
+  --iris-text: 250 250 250;
+  --iris-text-secondary: 161 161 170;
+  --iris-text-muted: 113 113 122;
+  --iris-text-faint: 82 82 91;
+  --iris-primary: 59 130 246;
+  --iris-primary-text: 255 255 255;
+  --iris-success: 34 197 94;
+  --iris-warning: 245 158 11;
+  --iris-error: 239 68 68;
+  --iris-pending: 245 158 11;
+  --iris-thinking: 168 85 247;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --iris-bg: 255 255 255;
+  --iris-bg-subtle: 249 250 251;
+  --iris-surface: 243 243 244;
+  --iris-surface-hover: 244 244 245;
+  --iris-surface-active: 228 228 231;
+  --iris-surface-raised: 244 244 245;
+  --iris-border: 218 218 222;
+  --iris-border-muted: 228 228 231;
+  --iris-text: 9 9 11;
+  --iris-text-secondary: 82 82 91;
+  --iris-text-muted: 161 161 170;
+  --iris-text-faint: 163 163 168;
+  --iris-primary: 37 99 235;
+  --iris-primary-text: 255 255 255;
+  --iris-success: 22 163 74;
+  --iris-warning: 217 119 6;
+  --iris-error: 220 38 38;
+  --iris-pending: 180 83 9;
+  --iris-thinking: 126 34 206;
+  color-scheme: light;
+}
+
+[data-theme="solarized-dark"] {
+  --iris-bg: 0 43 54;
+  --iris-bg-subtle: 7 54 66;
+  --iris-surface: 7 54 66;
+  --iris-surface-hover: 14 65 77;
+  --iris-surface-active: 22 76 88;
+  --iris-surface-raised: 29 87 99;
+  --iris-border: 44 100 112;
+  --iris-border-muted: 22 76 88;
+  --iris-text: 147 161 161;
+  --iris-text-secondary: 131 148 150;
+  --iris-text-muted: 101 123 131;
+  --iris-text-faint: 88 110 117;
+  --iris-primary: 38 139 210;
+  --iris-primary-text: 255 255 255;
+  --iris-success: 133 153 0;
+  --iris-warning: 181 137 0;
+  --iris-error: 220 50 47;
+  --iris-pending: 181 137 0;
+  --iris-thinking: 108 113 196;
+  color-scheme: dark;
+}
+
+[data-theme="dracula"] {
+  --iris-bg: 40 42 54;
+  --iris-bg-subtle: 48 51 65;
+  --iris-surface: 55 59 73;
+  --iris-surface-hover: 62 66 81;
+  --iris-surface-active: 68 71 90;
+  --iris-surface-raised: 75 78 97;
+  --iris-border: 98 114 164;
+  --iris-border-muted: 68 71 90;
+  --iris-text: 248 248 242;
+  --iris-text-secondary: 222 222 214;
+  --iris-text-muted: 159 164 180;
+  --iris-text-faint: 117 121 138;
+  --iris-primary: 189 147 249;
+  --iris-primary-text: 40 42 54;
+  --iris-success: 80 250 123;
+  --iris-warning: 241 250 140;
+  --iris-error: 255 85 85;
+  --iris-pending: 241 250 140;
+  --iris-thinking: 189 147 249;
+  color-scheme: dark;
+}
+
+[data-theme="monokai"] {
+  --iris-bg: 39 40 34;
+  --iris-bg-subtle: 47 48 42;
+  --iris-surface: 55 56 48;
+  --iris-surface-hover: 63 64 56;
+  --iris-surface-active: 72 73 62;
+  --iris-surface-raised: 80 81 69;
+  --iris-border: 102 102 85;
+  --iris-border-muted: 72 73 62;
+  --iris-text: 248 248 242;
+  --iris-text-secondary: 230 219 196;
+  --iris-text-muted: 165 159 133;
+  --iris-text-faint: 117 113 94;
+  --iris-primary: 166 226 46;
+  --iris-primary-text: 39 40 34;
+  --iris-success: 166 226 46;
+  --iris-warning: 253 151 31;
+  --iris-error: 249 38 114;
+  --iris-pending: 253 151 31;
+  --iris-thinking: 174 129 255;
+  color-scheme: dark;
+}
+
+[data-theme="catppuccin"] {
+  --iris-bg: 30 30 46;
+  --iris-bg-subtle: 36 36 54;
+  --iris-surface: 41 42 62;
+  --iris-surface-hover: 49 50 68;
+  --iris-surface-active: 57 59 80;
+  --iris-surface-raised: 69 71 90;
+  --iris-border: 88 91 112;
+  --iris-border-muted: 57 59 80;
+  --iris-text: 205 214 244;
+  --iris-text-secondary: 186 194 222;
+  --iris-text-muted: 147 153 178;
+  --iris-text-faint: 108 112 134;
+  --iris-primary: 137 180 250;
+  --iris-primary-text: 30 30 46;
+  --iris-success: 166 227 161;
+  --iris-warning: 249 226 175;
+  --iris-error: 243 139 168;
+  --iris-pending: 249 226 175;
+  --iris-thinking: 203 166 247;
+  color-scheme: dark;
+}
+
+[data-theme="gruvbox"] {
+  --iris-bg: 40 40 40;
+  --iris-bg-subtle: 50 48 47;
+  --iris-surface: 60 56 54;
+  --iris-surface-hover: 69 65 62;
+  --iris-surface-active: 80 73 69;
+  --iris-surface-raised: 92 83 78;
+  --iris-border: 124 111 100;
+  --iris-border-muted: 80 73 69;
+  --iris-text: 235 219 178;
+  --iris-text-secondary: 213 196 161;
+  --iris-text-muted: 168 153 132;
+  --iris-text-faint: 146 131 116;
+  --iris-primary: 250 189 47;
+  --iris-primary-text: 40 40 40;
+  --iris-success: 184 187 38;
+  --iris-warning: 254 128 25;
+  --iris-error: 251 73 52;
+  --iris-pending: 254 128 25;
+  --iris-thinking: 211 134 155;
+  color-scheme: dark;
+}
+
+[data-theme="tokyo-night"] {
+  --iris-bg: 26 27 38;
+  --iris-bg-subtle: 31 32 46;
+  --iris-surface: 36 38 52;
+  --iris-surface-hover: 43 45 60;
+  --iris-surface-active: 51 53 68;
+  --iris-surface-raised: 59 62 78;
+  --iris-border: 86 95 137;
+  --iris-border-muted: 51 53 68;
+  --iris-text: 169 177 214;
+  --iris-text-secondary: 150 158 194;
+  --iris-text-muted: 120 128 164;
+  --iris-text-faint: 96 104 138;
+  --iris-primary: 122 162 247;
+  --iris-primary-text: 26 27 38;
+  --iris-success: 115 218 202;
+  --iris-warning: 224 175 104;
+  --iris-error: 247 118 142;
+  --iris-pending: 224 175 104;
+  --iris-thinking: 187 154 247;
+  color-scheme: dark;
+}
+
+[data-theme="phosphor"] {
+  --iris-bg: 5 5 5;
+  --iris-bg-subtle: 10 12 8;
+  --iris-surface: 12 18 10;
+  --iris-surface-hover: 16 24 13;
+  --iris-surface-active: 20 30 16;
+  --iris-surface-raised: 24 36 19;
+  --iris-border: 30 55 25;
+  --iris-border-muted: 18 30 15;
+  --iris-text: 51 255 0;
+  --iris-text-secondary: 35 180 0;
+  --iris-text-muted: 25 120 10;
+  --iris-text-faint: 18 80 10;
+  --iris-primary: 51 255 0;
+  --iris-primary-text: 5 5 5;
+  --iris-success: 51 255 0;
+  --iris-warning: 180 200 0;
+  --iris-error: 255 60 30;
+  --iris-pending: 180 200 0;
+  --iris-thinking: 80 220 60;
+  color-scheme: dark;
+
+  /* Per-theme ANSI colors — green-biased monochrome CRT palette */
+  --iris-ansi-black: #050505;
+  --iris-ansi-red: #cc4422;
+  --iris-ansi-green: #33ff00;
+  --iris-ansi-yellow: #aacc00;
+  --iris-ansi-blue: #22aa55;
+  --iris-ansi-magenta: #88aa33;
+  --iris-ansi-cyan: #44dd55;
+  --iris-ansi-white: #77cc66;
+  --iris-ansi-brightBlack: #224411;
+  --iris-ansi-brightRed: #ff6633;
+  --iris-ansi-brightGreen: #55ff22;
+  --iris-ansi-brightYellow: #ccee22;
+  --iris-ansi-brightBlue: #33cc66;
+  --iris-ansi-brightMagenta: #aacc55;
+  --iris-ansi-brightCyan: #66ff77;
+  --iris-ansi-brightWhite: #ccffaa;
+
+}
+
+/* Phosphor green color matrix for UI elements (tab bar, menus, portals).
+   Scoped to avoid the terminal canvas — Safari doesn't apply CSS filters
+   to WebGL canvases, so terminal content is filtered in the CRT shader instead.
+   References inline SVG <filter> in index.html for Safari compat. */
+[data-theme="phosphor"] [data-tabbar] {
+  filter: url(#phosphor-green);
+}
+[data-theme="phosphor"] [data-portal-phosphor] {
+  filter: url(#phosphor-green);
+}
+
+/* Legacy aliases */
+:root {
+  --color-bg: rgb(var(--iris-bg));
+  --color-surface: rgb(var(--iris-surface));
+  --color-border: rgb(var(--iris-border));
+  --color-text: rgb(var(--iris-text));
+  --color-text-muted: rgb(var(--iris-text-secondary));
+  --color-primary: rgb(var(--iris-primary));
+  --color-success: rgb(var(--iris-success));
+  --color-warning: rgb(var(--iris-warning));
+  --color-error: rgb(var(--iris-error));
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--iris-text-faint)); }
+
+/* GitHub Markdown CSS overrides */
+.markdown-body {
+  --bgColor-default: transparent;
+  --bgColor-muted: rgb(var(--iris-bg-subtle));
+  --borderColor-default: rgb(var(--iris-border));
+  --borderColor-muted: rgb(var(--iris-border-muted));
+  color: rgb(var(--iris-text));
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.markdown-body pre { background-color: rgb(var(--iris-bg-subtle)) !important; }
+.markdown-body code:not(pre code) {
+  background-color: rgb(var(--iris-surface-raised) / 0.35);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-size: 85%;
+}
+.markdown-body table { border-collapse: collapse; width: 100%; }
+.markdown-body table th, .markdown-body table td {
+  border: 1px solid rgb(var(--iris-border));
+  padding: 6px 13px;
+  color: rgb(var(--iris-text));
+}
+.markdown-body table th { background-color: rgb(var(--iris-surface)); }
+.markdown-body table tr { background-color: rgb(var(--iris-bg)); }
+.markdown-body table tr:nth-child(2n) { background-color: rgb(var(--iris-bg-subtle)); }
+
+.app-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.streaming-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: blink-cursor 1s step-end infinite;
+}

@@ -2,6 +2,8 @@
 
 Web-based terminal with Claude Code integration. Runs a local server with shell terminals, Claude Code sessions, and an AI chat interface — all running in parallel browser tabs.
 
+https://github.com/user-attachments/assets/f9a03208-deb0-4bf6-a5e5-153d06308afc
+
 ## Install
 
 ```bash

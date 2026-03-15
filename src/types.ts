@@ -64,7 +64,13 @@ export interface PtyErrorMessage {
   error: string;
 }
 
-export type ServerMessage = PtyStartedMessage | PtyOutputMessage | PtyExitMessage | PtyErrorMessage;
+export interface PtyCwdMessage {
+  type: 'pty_cwd';
+  id: string;
+  name: string;
+}
+
+export type ServerMessage = PtyStartedMessage | PtyOutputMessage | PtyExitMessage | PtyErrorMessage | PtyCwdMessage;
 
 // Context meter types
 export interface ContextUsage {

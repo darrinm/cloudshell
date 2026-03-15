@@ -11,6 +11,7 @@ interface TerminalTabProps {
   visible?: boolean;
   command?: string;
   cwd?: string;
+  onCwdChange?: (tabId: string, dirName: string) => void;
 }
 
 type ConnectionState = 'connecting' | 'connected' | 'disconnected' | 'exited';
@@ -245,7 +246,7 @@ function updateSgrReset() {
   sgrResetReplacement = new TextEncoder().encode(`\x1b[0;48;2;${r};${g};${b}m`);
 }
 
-export default function TerminalTab({ tabId, visible, command, cwd }: TerminalTabProps) {
+export default function TerminalTab({ tabId, visible, command, cwd, onCwdChange }: TerminalTabProps) {
   const termContainerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
@@ -268,6 +269,8 @@ export default function TerminalTab({ tabId, visible, command, cwd }: TerminalTa
   const { crtEnabled } = useCRT();
   const crtEnabledRef = useRef(crtEnabled);
   crtEnabledRef.current = crtEnabled;
+  const onCwdChangeRef = useRef(onCwdChange);
+  onCwdChangeRef.current = onCwdChange;
 
   // Mobile touch state
   const keyboardHeight = useKeyboardHeight();
@@ -423,6 +426,11 @@ export default function TerminalTab({ tabId, visible, command, cwd }: TerminalTa
           exitedRef.current = true;
           setConnectionState('exited');
           setExitCode((msg.exitCode as number) ?? null);
+          break;
+        }
+
+        case 'pty_cwd': {
+          onCwdChangeRef.current?.(tabId, msg.name as string);
           break;
         }
 

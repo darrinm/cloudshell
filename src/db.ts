@@ -58,8 +58,28 @@ export function getDb(cwd: string): Database.Database {
     );
   `);
 
-  // Migrate: rename 'work' tab type to 'agent'
-  db.exec("UPDATE tabs SET type = 'agent' WHERE type = 'work'");
+  // Migrate: rename 'work' tab type to 'agent' and fix CHECK constraint
+  // SQLite doesn't allow ALTER TABLE to change constraints, so recreate if needed
+  const tableInfo = db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='tabs'").get() as { sql: string } | undefined;
+  if (tableInfo?.sql?.includes("'work'")) {
+    db.exec(`
+      CREATE TABLE tabs_new (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        type TEXT NOT NULL CHECK(type IN ('terminal', 'code', 'agent')),
+        title TEXT NOT NULL,
+        sort_order INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      INSERT INTO tabs_new SELECT id, user_id, CASE WHEN type = 'work' THEN 'agent' ELSE type END, title, sort_order, created_at, updated_at FROM tabs;
+      DROP TABLE tabs;
+      ALTER TABLE tabs_new RENAME TO tabs;
+      CREATE INDEX IF NOT EXISTS idx_tabs_user ON tabs(user_id, sort_order);
+    `);
+  } else {
+    db.exec("UPDATE tabs SET type = 'agent' WHERE type = 'work'");
+  }
 
   // Migrate: add user_id column to conversations if missing
   const cols = db.prepare('PRAGMA table_info(conversations)').all() as { name: string }[];

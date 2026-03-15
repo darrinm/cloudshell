@@ -246,6 +246,11 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
     }
   }, []);
 
+  const handleCwdChange = useCallback((tabId: string, dirName: string) => {
+    setTabs((prev) => prev.map((t) => (t.id === tabId ? { ...t, title: dirName } : t)));
+    serverRenameTab(tabId, dirName).catch(() => {});
+  }, []);
+
   const reorderTabs = useCallback((orderedIds: string[]) => {
     setTabs((prev) => {
       const map = new Map(prev.map((t) => [t.id, t]));
@@ -287,10 +292,10 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
             style={{ display: tab.id === activeTabId ? 'block' : 'none' }}
           >
             {tab.type === 'terminal' && (
-              <TerminalTab tabId={tab.id} visible={tab.id === activeTabId} />
+              <TerminalTab tabId={tab.id} visible={tab.id === activeTabId} onCwdChange={handleCwdChange} />
             )}
             {tab.type === 'code' && (
-              <TerminalTab tabId={tab.id} visible={tab.id === activeTabId} command='claude' />
+              <TerminalTab tabId={tab.id} visible={tab.id === activeTabId} command='claude' onCwdChange={handleCwdChange} />
             )}
             {tab.type === 'agent' && (
               <AgentTab

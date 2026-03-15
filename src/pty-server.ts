@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as pty from 'node-pty';
 import type { WebSocket } from 'ws';
 
@@ -8,9 +9,13 @@ interface PtySession {
   scrollback: Buffer[];
   scrollbackSize: number;
   ws: WebSocket | null;
+  lastCwdName: string | null;
 }
 
 const MAX_SCROLLBACK = 1024 * 1024; // 1MB
+
+// Match OSC 7: ESC ] 7 ; file://host/path BEL  or  ESC ] 7 ; file://host/path ESC \
+const OSC7_RE = /\x1b\]7;file:\/\/[^/]*([^\x07\x1b]*)\x07|\x1b\]7;file:\/\/[^/]*([^\x07\x1b]*)\x1b\\/;
 
 const sessions = new Map<string, PtySession>();
 
@@ -65,6 +70,7 @@ export function handlePtyMessage(
           scrollback: [],
           scrollbackSize: 0,
           ws,
+          lastCwdName: null,
         };
         sessions.set(msg.id, session);
 
@@ -83,6 +89,19 @@ export function handlePtyMessage(
             const b64 = buf.toString('base64');
             send(session.ws, { type: 'pty_output', id: msg.id, data: b64 });
           }
+
+          // Parse OSC 7 for cwd updates
+          const osc7Match = OSC7_RE.exec(data);
+          if (osc7Match) {
+            const rawPath = decodeURIComponent(osc7Match[1] || osc7Match[2]);
+            const dirName = path.basename(rawPath) || rawPath;
+            if (dirName !== session.lastCwdName) {
+              session.lastCwdName = dirName;
+              if (session.ws && session.ws.readyState === session.ws.OPEN) {
+                send(session.ws, { type: 'pty_cwd', id: msg.id, name: dirName });
+              }
+            }
+          }
         });
 
         p.onExit(({ exitCode }) => {
@@ -96,6 +115,23 @@ export function handlePtyMessage(
         });
 
         send(ws, { type: 'pty_started', id: msg.id });
+
+        // Inject OSC 7 precmd hook for shell tabs (not custom commands like 'claude')
+        if (!command) {
+          // Detect shell and inject appropriate hook
+          const shellBase = path.basename(shell);
+          if (shellBase === 'zsh') {
+            // Zsh: add precmd function that emits OSC 7
+            p.write(
+              ' __cloudshell_precmd() { printf "\\e]7;file://%s%s\\a" "$(hostname)" "$(pwd)"; }; precmd_functions+=(__cloudshell_precmd); clear\n',
+            );
+          } else if (shellBase === 'bash') {
+            // Bash: use PROMPT_COMMAND
+            p.write(
+              ' PROMPT_COMMAND=\'printf "\\e]7;file://%s%s\\a" "$(hostname)" "$(pwd)"\'; clear\n',
+            );
+          }
+        }
 
         // Replay scrollback for reconnect (there won't be any for new sessions, but this handles reconnect)
       } catch (err) {

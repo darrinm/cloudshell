@@ -220,7 +220,14 @@ export async function runStream(
       signal,
     });
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      let msg = `HTTP ${response.status}`;
+      try {
+        const body = await response.json();
+        if (body?.error) msg = body.error;
+      } catch {}
+      throw new Error(msg);
+    }
     const reader = response.body?.getReader();
     if (!reader) throw new Error('No response body');
 

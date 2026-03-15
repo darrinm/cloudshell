@@ -756,7 +756,7 @@ app.post('/api/chat', async (req, res) => {
   const conversationId = tab_id || 'default';
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    res.status(500).json({ error: 'ANTHROPIC_API_KEY not set' });
+    res.status(503).json({ error: 'ANTHROPIC_API_KEY is not set. Start CloudShell with ANTHROPIC_API_KEY=sk-... in your environment.' });
     return;
   }
 

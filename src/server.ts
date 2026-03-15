@@ -459,14 +459,14 @@ app.get('/api/tabs', (req, res) => {
 app.post('/api/tabs', (req, res) => {
   const userId = resolveUserId(req);
   const { type, title } = req.body;
-  if (!type || !['terminal', 'code', 'work'].includes(type)) {
-    res.status(400).json({ error: 'type required (terminal, code, work)' });
+  if (!type || !['terminal', 'code', 'agent'].includes(type)) {
+    res.status(400).json({ error: 'type required (terminal, code, agent)' });
     return;
   }
   const tab = createTab(CWD, userId, { type, title });
 
-  // For work tabs, also create a conversation
-  if (type === 'work') {
+  // For agent tabs, also create a conversation
+  if (type === 'agent') {
     createConversation(CWD, tab.id, tab.title, userId);
   }
 

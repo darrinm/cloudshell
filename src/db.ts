@@ -43,7 +43,7 @@ export function getDb(cwd: string): Database.Database {
     CREATE TABLE IF NOT EXISTS tabs (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
-      type TEXT NOT NULL CHECK(type IN ('terminal', 'code', 'work')),
+      type TEXT NOT NULL CHECK(type IN ('terminal', 'code', 'agent')),
       title TEXT NOT NULL,
       sort_order INTEGER NOT NULL,
       created_at TEXT NOT NULL,
@@ -57,6 +57,9 @@ export function getDb(cwd: string): Database.Database {
       value TEXT NOT NULL
     );
   `);
+
+  // Migrate: rename 'work' tab type to 'agent'
+  db.exec("UPDATE tabs SET type = 'agent' WHERE type = 'work'");
 
   // Migrate: add user_id column to conversations if missing
   const cols = db.prepare('PRAGMA table_info(conversations)').all() as { name: string }[];
@@ -151,7 +154,7 @@ export function createTab(
   const id = `tab-${nextId}`;
   bumpNextTabId(d, nextId);
 
-  const titles: Record<string, string> = { terminal: 'Shell', code: 'Claude', work: 'Agent' };
+  const titles: Record<string, string> = { terminal: 'Shell', code: 'Claude', agent: 'Agent' };
   const prefix = titles[opts.type] || opts.type;
   let title = opts.title;
   if (!title) {

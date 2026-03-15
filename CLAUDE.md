@@ -37,7 +37,7 @@ npm run dev             # API (nodemon) + Vite together
 - Reconnect logic: `pty_attach` first, falls back to `pty_create` if session gone
 - `createdSessions` Set is module-level (survives re-renders, resets on page refresh)
 
-### Chat Frontend (`web/src/components/WorkTab.tsx`)
+### Chat Frontend (`web/src/components/AgentTab.tsx`)
 - Agent SDK chat via SSE (`POST /api/chat`)
 - Renders: markdown, tool use blocks, thinking blocks, sub-agent tasks
 - Context meter, file upload, @-mentions, slash commands
@@ -49,7 +49,7 @@ npm run dev             # API (nodemon) + Vite together
 ### Tab Bar (`web/src/components/TabBar.tsx`)
 - Tab overflow: when tabs exceed bar width, hidden tabs go into a ⋯ overflow dropdown
 - Context menu: right-click (desktop) or long-press (mobile) on any tab
-  - Work tabs: model radio list, thinking toggle with effort/budget, rename, close
+  - Agent tabs: model radio list, thinking toggle with effort/budget, rename, close
   - Shell/Claude tabs: rename, close
 - Long-press detection: 500ms `setTimeout` on `touchstart`, cancelled if finger moves >5px
 - Synthetic mouse event suppression: timestamp-based 500ms grace period after touch context menu open
@@ -63,7 +63,7 @@ npm run dev             # API (nodemon) + Vite together
 - **Tab state preservation**: Tabs hidden with `display:none`, not unmounted, to preserve ghostty-web terminal state
 - **Base64 PTY I/O**: All PTY data encoded as base64 over JSON WebSocket messages
 - **WebGL cursor**: Cursor rendered by WebGLRenderer (block/bar/underline), color = foreground color, blink enabled
-- **State lifting**: Per-tab settings (model, thinking) owned by App.tsx, passed to TabBar (context menu) and WorkTab (API calls)
+- **State lifting**: Per-tab settings (model, thinking) owned by App.tsx, passed to TabBar (context menu) and AgentTab (API calls)
 - **Mobile keyboard**: `visualViewport` resize listener tracks keyboard height; container shrinks by that amount
 - **Long-press → context menu**: 500ms touch timer with 5px scroll threshold cancellation; dismiss handler has 500ms grace period to ignore synthetic mousedown events
 

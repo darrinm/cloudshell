@@ -66,7 +66,7 @@ Optional: `GITHUB_ALLOWED_USERS` — comma-separated list of GitHub usernames to
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
-| `ANTHROPIC_API_KEY` | For Work tabs | Claude API access |
+| `ANTHROPIC_API_KEY` | For Agent tabs | Claude API access |
 | `CLOUDSHELL_PASSWORD` | No | Enable password protection |
 | `GITHUB_CLIENT_ID` | No | GitHub OAuth app client ID |
 | `GITHUB_CLIENT_SECRET` | No | GitHub OAuth app client secret |

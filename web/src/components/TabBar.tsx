@@ -5,7 +5,7 @@ import type { TabSettings } from '../App';
 import AppMenu from './AppMenu';
 import { BUDGET_OPTIONS, EFFORT_OPTIONS, isAdvancedModel } from './ThinkingToggle';
 
-export type TabType = 'terminal' | 'code' | 'work';
+export type TabType = 'terminal' | 'code' | 'agent';
 
 export interface Tab {
   id: string;
@@ -71,7 +71,7 @@ function TabIcon({ type }: { type: TabType }) {
           <rect x='9' y='6' width='1' height='2' fill='#c27a4a' />
         </svg>
       );
-    case 'work':
+    case 'agent':
       return (
         <svg
           className='w-3.5 h-3.5 text-iris-thinking'
@@ -549,7 +549,7 @@ export default function TabBar({
             className='fixed z-[60] min-w-[200px] bg-iris-surface border border-iris-border rounded-lg shadow-float py-1'
             style={{ top: contextMenu.y, left: contextMenu.x }}
           >
-            {contextTab.type === 'work' && contextSettings && (
+            {contextTab.type === 'agent' && contextSettings && (
               <>
                 {/* Model section */}
                 <div className='px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-iris-text-faint'>
@@ -689,11 +689,11 @@ export default function TabBar({
       <div className='hidden md:flex items-center gap-0.5 px-2 shrink-0'>
         <button
           className='p-1.5 rounded hover:bg-iris-surface-hover transition-colors'
-          onClick={() => onAddTab('work')}
+          onClick={() => onAddTab('agent')}
           title='New Agent'
           aria-label='New Agent'
         >
-          <TabIcon type='work' />
+          <TabIcon type='agent' />
         </button>
         <button
           className='p-1.5 rounded hover:bg-iris-surface-hover transition-colors'
@@ -740,11 +740,11 @@ export default function TabBar({
             <button
               className='w-full px-3 py-2 text-left text-sm text-iris-text-secondary hover:bg-iris-surface-hover transition-colors flex items-center gap-2'
               onClick={() => {
-                onAddTab('work');
+                onAddTab('agent');
                 setNewTabMenuOpen(false);
               }}
             >
-              <TabIcon type='work' />
+              <TabIcon type='agent' />
               New Agent
             </button>
             <button

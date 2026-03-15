@@ -117,13 +117,13 @@ function convertToApiMessages(messages: ChatMessage[]): Array<{ role: string; co
   return apiMessages;
 }
 
-interface WorkTabProps {
+interface AgentTabProps {
   tabId: string;
   visible?: boolean;
   settings: TabSettings;
 }
 
-export default function WorkTab({ tabId, settings }: WorkTabProps) {
+export default function AgentTab({ tabId, settings }: AgentTabProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const streamState = useStream(tabId);

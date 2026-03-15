@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import LoginPage from './components/LoginPage';
 import TabBar, { type Tab, type TabType } from './components/TabBar';
 import TerminalTab, { preloadSessions } from './components/TerminalTab';
-import WorkTab from './components/WorkTab';
+import AgentTab from './components/AgentTab';
 import { authFetch } from './lib/authFetch';
 import { clearStream, getStream, useStreamingTabIds } from './lib/streamingStore';
 import {
@@ -106,7 +106,7 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
 
         // Empty state: create one default Work tab
         if (serverTabs.length === 0) {
-          const newTab = await serverCreateTab('work');
+          const newTab = await serverCreateTab('agent');
           serverTabs = [newTab];
         }
 
@@ -133,7 +133,7 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
       } catch {
         // Fallback: create a default tab
         try {
-          const newTab = await serverCreateTab('work');
+          const newTab = await serverCreateTab('agent');
           if (!cancelled) {
             setTabs([{ id: newTab.id, type: newTab.type as TabType, title: newTab.title }]);
             setActiveTabId(newTab.id);
@@ -171,8 +171,8 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
   // Load conversation settings for work tabs on startup
   useEffect(() => {
     if (loading) return;
-    const workTabs = tabsRef.current.filter((t) => t.type === 'work');
-    for (const tab of workTabs) {
+    const agentTabs = tabsRef.current.filter((t) => t.type === 'agent');
+    for (const tab of agentTabs) {
       authFetch(`/api/conversations/${tab.id}`)
         .then((res) => (res.ok ? res.json() : null))
         .then((conv) => {
@@ -202,7 +202,7 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
   const closeTab = useCallback((id: string) => {
     const closing = tabsRef.current.find((t) => t.id === id);
 
-    if (closing?.type === 'work') {
+    if (closing?.type === 'agent') {
       // Abort active stream and clear streaming store
       const stream = getStream(id);
       if (stream?.streaming) {
@@ -232,12 +232,12 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
   const renameTab = useCallback((id: string, title: string) => {
     setTabs((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
 
-    // Update on server (handles both tab title and conversation title for work tabs)
+    // Update on server (handles both tab title and conversation title for agent tabs)
     serverRenameTab(id, title).catch(() => {});
 
-    // Also update conversation title for Work tabs
+    // Also update conversation title for Agent tabs
     const tab = tabsRef.current.find((t) => t.id === id);
-    if (tab?.type === 'work') {
+    if (tab?.type === 'agent') {
       authFetch(`/api/conversations/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -292,8 +292,8 @@ function AppContent({ authEnabled, onLogout }: { authEnabled: boolean; onLogout:
             {tab.type === 'code' && (
               <TerminalTab tabId={tab.id} visible={tab.id === activeTabId} command='claude' />
             )}
-            {tab.type === 'work' && (
-              <WorkTab
+            {tab.type === 'agent' && (
+              <AgentTab
                 tabId={tab.id}
                 visible={tab.id === activeTabId}
                 settings={getTabSettings(tab.id)}

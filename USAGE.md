@@ -30,7 +30,7 @@ On mobile/touch devices, a toolbar appears above the keyboard with Tab, Esc, Ctr
 
 Runs Claude Code CLI in a terminal. Same as typing `claude` in a shell, but in its own tab. Useful for having a persistent Claude Code session alongside your shells.
 
-### Chat
+### Agent
 
 An AI chat interface powered by the Anthropic Agent SDK. Features:
 
@@ -61,7 +61,7 @@ Click the cloud icon in the top-left corner to access:
 
 | Variable | Purpose |
 |----------|---------|
-| `ANTHROPIC_API_KEY` | Required for Chat tabs |
+| `ANTHROPIC_API_KEY` | Required for Agent tabs |
 | `CLOUDSHELL_PASSWORD` | Set to enable password protection |
 | `SHELL` | Override default shell (default: `/bin/zsh`) |
 

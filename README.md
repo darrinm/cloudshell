@@ -1,6 +1,6 @@
 # CloudShell
 
-Web-based terminal with Claude Code integration. Runs a local server with shell terminals, Claude Code sessions, and an AI chat interface — all in browser tabs.
+Web-based terminal with Claude Code integration. Runs a local server with shell terminals, Claude Code sessions, and an AI chat interface — all running in parallel browser tabs.
 
 ## Install
 
@@ -25,7 +25,7 @@ Opens at `http://localhost:4444`. If a password is set via `CLOUDSHELL_PASSWORD`
 
 ## Tab Types
 
-Create new tabs with the buttons on the right side of the tab bar.
+All tabs run independently and in parallel — run builds in a Shell while chatting in an Agent tab and monitoring logs in another Shell. Create new tabs with the buttons on the right side of the tab bar.
 
 **Shell** — Full terminal (zsh/bash) via node-pty with WebGL rendering. Supports colors, vim, tmux — everything your local terminal does. On mobile, a toolbar appears above the keyboard with Tab, Esc, Ctrl, and arrow keys.
 

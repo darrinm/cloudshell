@@ -20,10 +20,10 @@ export function clearSession(tabId: string): void {
   sessionMap.delete(tabId);
 }
 
-const SDK_ENV: Record<string, string> = {
-  PATH: process.env.PATH || '',
-  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || '',
-};
+// Pass through the full environment (minus CLAUDECODE to prevent nested-session errors)
+const SDK_ENV: Record<string, string> = Object.fromEntries(
+  Object.entries(process.env).filter(([k, v]) => k !== 'CLAUDECODE' && v !== undefined),
+) as Record<string, string>;
 
 export async function* streamAgentSdk(
   tabId: string,

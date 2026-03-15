@@ -530,7 +530,7 @@ export default function WorkTab({ tabId, settings }: WorkTabProps) {
         if (file) {
           const previewUrl = URL.createObjectURL(file);
           uploadFile(file).then((result) => {
-            if (result)
+            if (result) {
               setPendingFiles((prev) => [
                 ...prev,
                 {
@@ -541,6 +541,9 @@ export default function WorkTab({ tabId, settings }: WorkTabProps) {
                   previewUrl,
                 },
               ]);
+            } else {
+              URL.revokeObjectURL(previewUrl);
+            }
           });
         }
         return;

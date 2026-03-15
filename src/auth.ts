@@ -8,6 +8,8 @@
  * - None: open access
  */
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 
 // --- Auth mode detection ---
 
@@ -50,7 +52,7 @@ export function isUserAllowed(username: string): boolean {
   return allowedUsers.has(username.toLowerCase());
 }
 
-// --- Server-side session store ---
+// --- Server-side session store (persisted to disk) ---
 
 export interface SessionData {
   githubToken: string;
@@ -58,20 +60,42 @@ export interface SessionData {
   createdAt: number;
 }
 
-const sessions = new Map<string, SessionData>();
+let sessionsDir: string | null = null;
+
+/** Initialize session persistence directory. Must be called before any session ops. */
+export function initSessionStore(cwd: string): void {
+  sessionsDir = path.join(cwd, '.cloudshell', 'sessions');
+  fs.mkdirSync(sessionsDir, { recursive: true });
+}
+
+function sessionPath(sessionId: string): string {
+  // Sanitize sessionId to prevent path traversal (should be hex, but be safe)
+  const safe = sessionId.replace(/[^a-f0-9]/gi, '');
+  if (!sessionsDir) throw new Error('Session store not initialized — call initSessionStore first');
+  return path.join(sessionsDir, `${safe}.json`);
+}
 
 export function createSession(data: SessionData): string {
   const sessionId = crypto.randomBytes(32).toString('hex');
-  sessions.set(sessionId, data);
+  fs.writeFileSync(sessionPath(sessionId), JSON.stringify(data), { mode: 0o600 });
   return sessionId;
 }
 
 export function getSession(sessionId: string): SessionData | undefined {
-  return sessions.get(sessionId);
+  try {
+    return JSON.parse(fs.readFileSync(sessionPath(sessionId), 'utf8'));
+  } catch {
+    return undefined;
+  }
 }
 
 export function deleteSession(sessionId: string): boolean {
-  return sessions.delete(sessionId);
+  try {
+    fs.unlinkSync(sessionPath(sessionId));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // --- OAuth state store (CSRF protection) ---

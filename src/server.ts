@@ -31,6 +31,7 @@ import {
   decryptPayload,
   deleteSession,
   getSession,
+  initSessionStore,
   isUserAllowed,
   parseCookie,
   validateOAuthState,
@@ -70,6 +71,8 @@ const opts = program.opts();
 const PORT = parseInt(opts.port, 10);
 const CWD = path.resolve(opts.cwd);
 const AUTO_OPEN = opts.open === true;
+
+initSessionStore(CWD);
 
 const webDist = path.join(import.meta.dirname, '..', 'web', 'dist');
 

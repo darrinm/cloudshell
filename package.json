@@ -13,7 +13,7 @@
   "bugs": "https://github.com/darrinm/cloudshell/issues",
   "keywords": ["terminal", "claude", "ai", "pty", "webgl", "shell"],
   "engines": { "node": ">=20" },
-  "files": ["dist/", "web/dist/", "README.md", "USAGE.md", "LICENSE"],
+  "files": ["dist/", "web/dist/", "README.md", "LICENSE"],
   "scripts": {
     "postinstall": "chmod +x node_modules/node-pty/prebuilds/darwin-arm64/spawn-helper 2>/dev/null; true",
     "build": "tsc",

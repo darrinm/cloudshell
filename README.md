@@ -21,23 +21,38 @@ Or without installing:
 npx cloudshell --open
 ```
 
-Opens at `http://localhost:4444`.
+Opens at `http://localhost:4444`. If a password is set via `CLOUDSHELL_PASSWORD`, you'll see a login screen first.
 
 ## Tab Types
 
-**Shell** — Full terminal (zsh/bash) via node-pty with WebGL rendering. Supports colors, vim, tmux — everything your local terminal does.
+Create new tabs with the buttons on the right side of the tab bar.
+
+**Shell** — Full terminal (zsh/bash) via node-pty with WebGL rendering. Supports colors, vim, tmux — everything your local terminal does. On mobile, a toolbar appears above the keyboard with Tab, Esc, Ctrl, and arrow keys.
 
 **Claude** — Claude Code CLI in a dedicated terminal tab. Same as running `claude` in a shell, but isolated.
 
-**Work** — AI chat powered by the Anthropic Agent SDK:
-- Model selection (Sonnet, Haiku, Opus)
-- Extended thinking with configurable effort/budget
-- Tool use display with expandable results
-- File upload and image paste
-- @-mentions for including file contents
-- Slash commands
-- Context usage meter
-- Markdown rendering with syntax highlighting
+**Agent** — AI chat powered by the Anthropic Agent SDK:
+- **Markdown rendering** — Code blocks, tables, lists
+- **Tool use display** — Expandable results for file reads, searches, bash commands, subagents. Shift-click for raw input/output.
+- **File upload** — Click + or drag-and-drop files and images
+- **@-mentions** — Type `@` followed by a filename to include file contents
+- **Slash commands** — Type `/` to see available commands
+- **Thinking toggle** — Extended thinking with configurable effort/budget (brain icon)
+- **Context meter** — Shows context window usage
+- **Model selector** — Sonnet, Haiku, Opus
+
+### Tab Management
+
+- **Close** — Click the X on any tab
+- **Rename** — Double-click a tab title
+- **Reorder** — Drag and drop tabs
+- Tab state persists across page refreshes
+
+### Settings
+
+Click the cloud icon in the top-left corner:
+- **Theme** — System, Light, Dark, Solarized Dark, Dracula, Monokai, Catppuccin, Gruvbox, Tokyo Night
+- **Log out** — Available when password protection is enabled
 
 ## CLI Options
 

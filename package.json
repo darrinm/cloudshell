@@ -1,5 +1,5 @@
 {
-  "name": "cloudshell",
+  "name": "@darrinm/cloudshell",
   "version": "1.0.0",
   "description": "Web-based terminal with Claude Code integration",
   "type": "module",
@@ -8,12 +8,29 @@
     "cloudshell": "dist/server.js"
   },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/darrinm/cloudshell.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darrinm/cloudshell.git"
+  },
   "homepage": "https://github.com/darrinm/cloudshell",
   "bugs": "https://github.com/darrinm/cloudshell/issues",
-  "keywords": ["terminal", "claude", "ai", "pty", "webgl", "shell"],
-  "engines": { "node": ">=20" },
-  "files": ["dist/", "web/dist/", "README.md", "LICENSE"],
+  "keywords": [
+    "terminal",
+    "claude",
+    "ai",
+    "pty",
+    "webgl",
+    "shell"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist/",
+    "web/dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "postinstall": "chmod +x node_modules/node-pty/prebuilds/darwin-arm64/spawn-helper 2>/dev/null; true",
     "build": "tsc",

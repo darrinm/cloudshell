@@ -7,7 +7,7 @@ https://github.com/user-attachments/assets/f9a03208-deb0-4bf6-a5e5-153d06308afc
 ## Install
 
 ```bash
-npm install -g cloudshell
+npm install -g @darrinm/cloudshell
 ```
 
 ## Quick Start
@@ -20,7 +20,7 @@ cloudshell --open
 Or without installing:
 
 ```bash
-npx cloudshell --open
+npx @darrinm/cloudshell --open
 ```
 
 Opens at `http://localhost:4444`. If a password is set via `CLOUDSHELL_PASSWORD`, you'll see a login screen first.

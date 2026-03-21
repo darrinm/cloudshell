@@ -1,6 +1,6 @@
 {
   "name": "@darrinm/cloudshell",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Web-based terminal with Claude Code integration",
   "type": "module",
   "main": "dist/server.js",
@@ -32,7 +32,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "postinstall": "chmod +x node_modules/node-pty/prebuilds/darwin-arm64/spawn-helper 2>/dev/null; true",
+    "postinstall": "node -e \"try{require('fs').chmodSync(require('path').join(require('path').dirname(require.resolve('node-pty/package.json')),'prebuilds','darwin-arm64','spawn-helper'),0o755)}catch{}\"",
     "build": "tsc",
     "build:web": "cd web && npm run build",
     "build:all": "npm run build && npm run build:web",
